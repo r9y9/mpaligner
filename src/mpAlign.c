@@ -3663,4 +3663,3 @@ void requireAlignments(TOTAL_INFO *info) {
   free(output_err_file);
   free(viterbi_table);
 }
-

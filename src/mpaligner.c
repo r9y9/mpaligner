@@ -384,4 +384,3 @@ int main(int argc, char **argv) {
   fprintf(stderr, "finish: %f (sec)\n", difftime(time2, time1));
   return 1;
 }
-
