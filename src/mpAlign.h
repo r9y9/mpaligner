@@ -23,6 +23,7 @@ author: Keigo Kubo
 #ifndef _INCLUDE_MPAlign_
 #define _INCLUDE_MPAlign_
 
+#include <unistd.h>
 #include "HASH_func.h"
 #define INV_LOG_TEN 0.434294482
 // 1.0e-9 is measure for calculation error
@@ -126,6 +127,7 @@ typedef struct total_info {
   PAIR_DATA *pair_data;
   char *delimiters_x; // array for storing mulitiple kind of delimiter of x
   char *delimiters_y;
+  int num_entries;
 
   Parameter total_update; // total of update value by training
   Parameter total_change; // total of change value by training

@@ -22,6 +22,8 @@ author: Keigo Kubo
 
 #include "mpAlign.h"
 
+#include "progressbar/progressbar.h"
+
 char start_and_end_symbol[2] = { 0x0b, '\0' }; // Start symbol and end symbol
                                                // are 0x1e.
 NumOfContextType *start_and_end_noct =
@@ -470,6 +472,8 @@ END_INPUT:
   fclose(fp);
   free(s);
   info->pair_data = top.next;
+  info->num_entries = i - 1;
+  fprintf(stderr, "Loaded %d entries\n", info->num_entries);
 
   if (restrictX == 0) {
     fprintf(stderr, "Set restrictX = %d\n", maxX);
@@ -2524,16 +2528,21 @@ static void initialization(TOTAL_INFO *info, double **alpha, double **beta) {
   LEN xl, yl, x_size, y_size;
   PAIR_DATA *pair_data;
 
+  progressbar *progress = progressbar_new("Loading",info->num_entries);
   for (pair_data = info->pair_data; pair_data != NULL;
        pair_data = pair_data->next) {
     expectation(info, pair_data, alpha, beta, pair_data->x_size,
                 pair_data->y_size);
+    usleep(1);
+    progressbar_inc(progress);
   }
+  progressbar_finish(progress);
 
   if (previous_knowledge_file != NULL) {
     readPreviousKnowledge();
   }
 
+  printf("hash size: %d\n", sqrt_hash_size);
   for (i = 0; i < sqrt_hash_size; i++) {
     for (j = 0; j < sqrt_hash_size; j++) {
       for (p = COP_TABLE[i][j]; p != NULL; p = p->next) {
